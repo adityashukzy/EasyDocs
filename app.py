@@ -14,7 +14,10 @@ def summarize(text, min_len, max_len):
     # summary = model(text, min_length=min_len, max_length=max_len, do_sample=False)[0]['summary_text']
 
     API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
-    headers = {"Authorization": "Bearer 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"}
+    headers = {
+        "Authorization": "Bearer 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",
+        "parameters": {"min_length": min_len, "max_length": max_len, "do_sample": False},
+        }
 
     payload = {"inputs": text}
     response = requests.post(API_URL, headers=headers, json=payload)
@@ -47,8 +50,8 @@ def main():
         st.write("Enter a text below and choose how many sentences long you want the summary to be, give it a moment and enjoy! We recognize the value that a short and crisp summary can have when it comes to skimming through pages and pages of dense information and are here to make that experience a little less painful for you!")
 
         text = st.text_input("Text to summarize", value="Enter here")
-        min_len = st.slider("Minimum length of the summary: (in characters)", min_value=20,step=20,max_value=256, key='first', value=20)
-        max_len = st.slider("Maximum length of the summary: (in characters)", min_value=20,step=20,max_value=256, key='second', value=100)
+        min_len = st.slider("Minimum number of words in the summary:", min_value=20,step=20,max_value=256, key='first', value=20)
+        max_len = st.slider("Maximum number of words in the summary:", min_value=20,step=20,max_value=256, key='second', value=100)
 
         with st.container():
             with st.expander("Read Summary"):
