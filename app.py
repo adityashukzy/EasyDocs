@@ -18,7 +18,7 @@ def summarize(text, min_len, max_len):
 
     payload = {"inputs": text}
     response = requests.post(API_URL, headers=headers, json=payload)
-    summary = response.json()
+    summary = response.json()[0]['summary_text']
 
     return summary
 
@@ -51,10 +51,10 @@ def main():
         max_len = st.slider("Maximum length of the summary: (in characters)", min_value=20,step=20,max_value=256, key='second', value=100)
 
         with st.container():
-            with st.expander("Find Summary"):
-                # with st.spinner("Summarizing..."):
-                summary = summarize(text, min_len, max_len)
-                st.markdown(summary)
+            with st.expander("Read Summary"):
+                with st.spinner("Summarizing..."):
+                    summary = summarize(text, min_len, max_len)
+                    st.markdown(summary)
 
 
 if __name__ == "__main__":
