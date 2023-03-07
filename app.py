@@ -1,6 +1,20 @@
 import requests
 import streamlit as st
 
+
+st.set_page_config(
+    page_title="EasyDocs",
+    page_icon="📄",
+    layout="wide",
+    initial_sidebar_state="expanded",
+    menu_items={
+        # 'Get Help': 'https://www.extremelycoolapp.com/help',
+        # 'Report a bug': "https://www.extremelycoolapp.com/bug",
+        'About': "# Welcome to EasyDocs📄 ! "
+    }
+)
+
+
 # Loading (& caching) the model
 @st.cache_resource
 def load_model(model_name):
