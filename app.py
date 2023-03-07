@@ -78,10 +78,8 @@ def main():
                 st.markdown("---")
 
                 if summary is not None:
-                    with st.expander("**Read Summary**"):
+                    with st.expander("**Read Summary**", ):
                         st.markdown(summary)
-                
-                st.markdown("---")
 
 
 if __name__ == "__main__":
