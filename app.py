@@ -70,15 +70,17 @@ def main():
             min_len = st.slider("Select minimum number of words in summary", min_value=20, step=20, max_value=256, key='first', value=20)
 
         with max_len_col:
-            max_len = st.slider("Select minimum number of words in summary", min_value=20, step=20, max_value=256, key='second', value=100)
+            max_len = st.slider("Select maximum number of words in summary", min_value=20, step=20, max_value=256, key='second', value=100)
 
         with model_col:
-            model_name = st.selectbox("(Optionally) Select model used for Summarization", ("bart-large-cnn", "bart-easydocs"))
+            model_name = st.selectbox("(Optional) Select model used for summarization", ("facebook/bart-large-cnn", "adityashukzy/bart-easydocs"))
 
-        if st.button("Extract summary"):
-            with st.spinner("Summarizing..."):
-                summary = summarize(text, min_len, max_len)
-            st.markdown(summary)
+        with st.container():    
+            if st.button("Extract summary", use_container_width=True):
+                with st.spinner("Summarizing..."):
+                    summary = summarize(text, min_len, max_len, model_name)
+                
+                st.subheader(summary)
 
 
 if __name__ == "__main__":
