@@ -56,13 +56,12 @@ def main():
 
     elif option == 'Summarize text':
         ## URL summarization
-        st.title("Summarize any academic text!")
-        st.write("Enter a text below and choose how many sentences long you want the summary to be, give it a moment and enjoy! We recognize the value that a short and crisp summary can have when it comes to skimming through pages and pages of dense information and are here to make that experience a little less painful for you!")
+        st.title("Summarize any text!")
         with st.expander("Keep in mind..."):
-            st.write("For general purposes, use bart-large-cnn.")
+            st.markdown("1. For general-purpose texts, use bart-large-cnn.\n2. For academic or scientific texts, use bart-easydocs.\n3. The summary produced may not accurately cover all relevant parts of a text. Use this tool only as a starting guide.")
 
-
-        text = st.text_area("## Enter text to summarize", height=150)
+        st.subheader("Enter text to summarize")
+        text = st.text_area(height=150, label_visibility="collapsed")
 
         min_len_col, max_len_col, model_col = st.columns(3)
 
@@ -80,7 +79,9 @@ def main():
                 with st.spinner("Summarizing..."):
                     summary = summarize(text, min_len, max_len, model_name)
                 
-                st.subheader(summary)
+                if summary is not None:
+                    with st.expander():
+                        st.markdown(summary)
 
 
 if __name__ == "__main__":
