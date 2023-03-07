@@ -1,3 +1,4 @@
+import requests
 import streamlit as st
 
 # Loading (& caching) the model
@@ -9,10 +10,17 @@ def load_model(model_name):
 
 # Summarization function
 def summarize(text, min_len, max_len):
-    model = load_model("facebook/bart-large-cnn")
-    summary = model(text, min_length=min_len, max_length=max_len, do_sample=False)
+    # model = load_model("facebook/bart-large-cnn")
+    # summary = model(text, min_length=min_len, max_length=max_len, do_sample=False)[0]['summary_text']
 
-    return summary[0]['summary_text']
+    API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
+    headers = {"Authorization": "Bearer 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"}
+
+    payload = {"inputs": text}
+    response = requests.post(API_URL, headers=headers, json=payload)
+    summary = response.json()
+
+    return summary
 
 # MAIN Function
 def main():
