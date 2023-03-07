@@ -70,16 +70,18 @@ def main():
         with model_col:
             model_name = st.selectbox("(Optional) Select model used for summarization", ("facebook/bart-large-cnn", "adityashukzy/bart-easydocs"))
 
-        st.markdown("---")
-
         with st.container():    
             if st.button("Click here to extract summary", use_container_width=True, type="primary"):
                 with st.spinner("Summarizing..."):
                     summary = summarize(text, min_len, max_len, model_name)
                 
+                st.markdown("---")
+
                 if summary is not None:
                     with st.expander("**Read Summary**"):
                         st.markdown(summary)
+                
+                st.markdown("---")
 
 
 if __name__ == "__main__":
