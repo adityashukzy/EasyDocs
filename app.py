@@ -13,7 +13,7 @@ def summarize(text, min_len, max_len, model_name="facebook/bart-large-cnn"):
     API_URL = "https://api-inference.huggingface.co/models/" + model_name
     headers = {"Authorization": "Bearer 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"}
 
-    payload = 
+    payload = \
         {
         "inputs": text,
         "parameters": {"min_length": min_len, "max_length": max_len, "do_sample": False}
