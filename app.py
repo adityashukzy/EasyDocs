@@ -73,12 +73,12 @@ def main():
         st.markdown("---")
 
         with st.container():    
-            if st.button("Click here to extract summary", use_container_width=True):
+            if st.button("Click here to extract summary", use_container_width=True, type="primary"):
                 with st.spinner("Summarizing..."):
                     summary = summarize(text, min_len, max_len, model_name)
                 
                 if summary is not None:
-                    with st.expander("*Read Summary*"):
+                    with st.expander("**Read Summary**"):
                         st.markdown(summary)
 
 
