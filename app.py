@@ -14,7 +14,6 @@ st.set_page_config(
     }
 )
 
-
 # Loading (& caching) the model
 @st.cache_resource
 def load_model(model_name):
@@ -61,7 +60,7 @@ def main():
 
         st.write("Enter a text below and choose how many sentences long you want the summary to be, give it a moment and enjoy! We recognize the value that a short and crisp summary can have when it comes to skimming through pages and pages of dense information and are here to make that experience a little less painful for you!")
 
-        text = st.text_input("Text to summarize", value="Enter here")
+        text = st.text_area("Text to summarize")
         min_len = st.slider("Minimum number of words in the summary:", min_value=20,step=20,max_value=256, key='first', value=20)
         max_len = st.slider("Maximum number of words in the summary:", min_value=20,step=20,max_value=256, key='second', value=100)
 
