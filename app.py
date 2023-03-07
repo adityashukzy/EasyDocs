@@ -58,7 +58,7 @@ def main():
         ## URL summarization
         st.title("Summarize any text!")
         with st.expander("Keep in mind..."):
-            st.markdown("1. For general-purpose texts, use bart-large-cnn.\n2. For academic or scientific texts, use bart-easydocs.\n3. The summary produced may not accurately cover all relevant parts of a text. Use this tool only as a starting guide.")
+            st.markdown("1. For general-purpose texts, use bart-large-cnn.\n2. For academic or scientific texts, use bart-easydocs.\n3. The summary produced may not accurately cover all relevant parts of a text. Use this tool only as a starting guide.\n")
 
         st.subheader("Enter text to summarize")
         text = st.text_area(label="", height=150, label_visibility="collapsed")
@@ -80,7 +80,7 @@ def main():
                     summary = summarize(text, min_len, max_len, model_name)
                 
                 if summary is not None:
-                    with st.expander():
+                    with st.expander("Read Summary"):
                         st.markdown(summary)
 
 
