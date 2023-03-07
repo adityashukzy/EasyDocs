@@ -6,7 +6,7 @@ st.set_page_config(
     page_title="EasyDocs",
     page_icon="📄",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="auto",
     menu_items={
         # 'Get Help': 'https://www.extremelycoolapp.com/help',
         # 'Report a bug': "https://www.extremelycoolapp.com/bug",
@@ -57,18 +57,28 @@ def main():
     elif option == 'Summarize text':
         ## URL summarization
         st.title("Summarize any academic text!")
-
         st.write("Enter a text below and choose how many sentences long you want the summary to be, give it a moment and enjoy! We recognize the value that a short and crisp summary can have when it comes to skimming through pages and pages of dense information and are here to make that experience a little less painful for you!")
+        with st.expander("Keep in mind..."):
+            st.write("For general purposes, use bart-large-cnn.")
+
 
         text = st.text_area("Text to summarize")
-        min_len = st.slider("Minimum number of words in the summary:", min_value=20,step=20,max_value=256, key='first', value=20)
-        max_len = st.slider("Maximum number of words in the summary:", min_value=20,step=20,max_value=256, key='second', value=100)
 
-        with st.container():
-            with st.expander("Read Summary"):
-                with st.spinner("Summarizing..."):
-                    summary = summarize(text, min_len, max_len)
-                    st.markdown(summary)
+        min_len_col, max_len_col, model_col = st.columns(3)
+
+        with min_len_col:
+            min_len = st.slider("Select minimum number of words in summary", min_value=20, step=20, max_value=256, key='first', value=20)
+
+        with max_len_col:
+            max_len = st.slider("Select minimum number of words in summary", min_value=20, step=20, max_value=256, key='second', value=100)
+
+        with model_col:
+            model_name = st.selectbox("(Optionally) Select model used for Summarization", ("bart-large-cnn", "bart-easydocs"))
+
+        if st.button("Extract summary"):
+            with st.spinner("Summarizing..."):
+                summary = summarize(text, min_len, max_len)
+            st.markdown(summary)
 
 
 if __name__ == "__main__":
