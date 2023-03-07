@@ -62,7 +62,7 @@ def main():
             st.write("For general purposes, use bart-large-cnn.")
 
 
-        text = st.text_area("Text to summarize")
+        text = st.text_area("## Enter text to summarize", height=150)
 
         min_len_col, max_len_col, model_col = st.columns(3)
 
@@ -76,7 +76,7 @@ def main():
             model_name = st.selectbox("(Optional) Select model used for summarization", ("facebook/bart-large-cnn", "adityashukzy/bart-easydocs"))
 
         with st.container():    
-            if st.button("Extract summary", use_container_width=True):
+            if st.button("Click here to extract summary", use_container_width=True):
                 with st.spinner("Summarizing..."):
                     summary = summarize(text, min_len, max_len, model_name)
                 
