@@ -9,17 +9,15 @@ def load_model(model_name):
     return model
 
 # Summarization function
-def summarize(text, min_len, max_len):
-    # model = load_model("facebook/bart-large-cnn")
-    # summary = model(text, min_length=min_len, max_length=max_len, do_sample=False)[0]['summary_text']
+def summarize(text, min_len, max_len, model_name="facebook/bart-large-cnn"):
+    API_URL = "https://api-inference.huggingface.co/models/" + model_name
+    headers = {"Authorization": "Bearer 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"}
 
-    API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn"
-    headers = {
-        "Authorization": "Bearer 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",
-        "parameters": {"min_length": min_len, "max_length": max_len, "do_sample": False},
+    payload = 
+        {
+        "inputs": text,
+        "parameters": {"min_length": min_len, "max_length": max_len, "do_sample": False}
         }
-
-    payload = {"inputs": text}
     response = requests.post(API_URL, headers=headers, json=payload)
     summary = response.json()[0]['summary_text']
 
