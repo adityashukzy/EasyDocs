@@ -41,12 +41,8 @@ def main():
     menu = ['Welcome', 'Summarize text']
     with st.sidebar.expander("Menu", expanded=False):
         option = st.selectbox('Choose your task', menu)
-        st.subheader("Made with ❤️ by Team Agnes")
 
     if option == 'Welcome':
-        # img_path = "dependencies/black-bg-logo.gif"
-
-        # st.image(img_path,width = 500)
         st.subheader("EasyDocs is a one-stop solution combining all your most needed tools as a student. We understand the value and preciousness of time and that is why we have aimed to make EasyDocs as no-nonsense as possible!")
 
         st.write("👉 Summarize webpages and long text documents and breeze through the essentials!")
@@ -74,13 +70,15 @@ def main():
         with model_col:
             model_name = st.selectbox("(Optional) Select model used for summarization", ("facebook/bart-large-cnn", "adityashukzy/bart-easydocs"))
 
+        st.markdown("---")
+
         with st.container():    
             if st.button("Click here to extract summary", use_container_width=True):
                 with st.spinner("Summarizing..."):
                     summary = summarize(text, min_len, max_len, model_name)
                 
                 if summary is not None:
-                    with st.expander("Read Summary"):
+                    with st.expander("*Read Summary*"):
                         st.markdown(summary)
 
 
