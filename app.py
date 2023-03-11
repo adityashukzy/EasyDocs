@@ -15,6 +15,7 @@ st.set_page_config(
     }
 )
 
+
 # Loading (& caching) the model
 @st.cache_resource
 def load_model(model_name):
@@ -38,11 +39,14 @@ def summarize(text, min_len, max_len, model_name="facebook/bart-large-cnn"):
     return summary
 
 # OCR function
-def extract_text(img):
+def extract_text(img, language='eng'):
     st.subheader("Extracted text")
-    extracted_text = pytesseract.image_to_string(img)
+    extracted_text = pytesseract.image_to_string(img, lang=language)
     return extracted_text
 
+
+# Language Codes for OCR
+lang_codes = {'English': 'eng', 'Hindi': 'hin', 'Tamil': 'tamil'}
 
 # MAIN Function
 def main():
@@ -96,21 +100,32 @@ def main():
         with st.expander("Keep in mind..."):
             st.markdown("1. Upload any image by dragging and dropping or browsing your files.\n2. Copy or download the extracted txt.\n")
 
-        img_file = st.file_uploader("Upload your image containing text", type=['png','jpg'])
-        
-        if img_file is not None:
-            # Show uploaded image
-            img = Image.open(img_file)
-            st.subheader('Uploaded Image:')
-            st.image(img)
+        uploader_col, lang_col = st.columns(2)
 
-            with st.spinner("Extracting text..."):
-                content = extract_text(img)
-                if content is not None:
-                    with st.expander("**Read Extracted Text**", ):
-                        st.markdown(content)
-                
-                st.download_button('Download extracted text', content)
+        with uploader_col:
+            img_file = st.file_uploader("Upload your image containing text", type=['png','jpg'])
+
+        with lang_col:
+            language = st.selectbox("(Optional) Select language", ('English', 'Hindi', 'Tamil'))
+        
+        image_col, extracted_col = st.columns(2)
+
+        with image_col:
+            if img_file is not None:
+                # Show uploaded image
+                img = Image.open(img_file)
+                st.subheader('Uploaded Image:')
+                st.image(img)
+
+        with extracted_col:
+            if img_file is not None:
+                with st.spinner("Extracting text..."):
+                    content = extract_text(img, lang_codes[language])
+                    if content is not None:
+                        with st.expander("**Read Extracted Text**", ):
+                            st.markdown(content)
+                    
+                    st.download_button('Download extracted text', content)
 
 if __name__ == "__main__":
     main()
