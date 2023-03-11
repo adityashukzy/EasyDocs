@@ -1,4 +1,5 @@
 import requests
+import pyperclip
 import pytesseract
 from PIL import Image
 import streamlit as st
@@ -129,7 +130,15 @@ def main():
                             with st.expander("**Read Extracted Text**", expanded=True):
                                 st.markdown(content)
                         
-                        st.download_button('Download extracted text', content)
+                        copy_col, download_col = st.columns(2)
+
+                        with copy_col:
+                            if st.button("Copy to Clipboard"):
+                                import pyperclip as pp
+                                pp.copy(content)
+
+                        with download_col:
+                            st.download_button('Download extracted text', content)
 
 if __name__ == "__main__":
     main()
