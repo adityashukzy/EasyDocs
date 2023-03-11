@@ -106,7 +106,10 @@ def main():
 
             with st.spinner("Extracting text..."):
                 content = extract_text(img)
-                st.write(content)
+                if content is not None:
+                    with st.expander("**Read Extracted Text**", ):
+                        st.markdown(content)
+                
                 st.download_button('Download extracted text', content)
 
 if __name__ == "__main__":
