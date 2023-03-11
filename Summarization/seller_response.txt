@@ -1,0 +1,13 @@
+We received an order from the buyer on 3rd January, 2022 for an Nvidia GPU. By Jan 5th, I hadd started the shipping process and was about to print out a label. I got an email from the buyer stating that he had recently moved and had accidentally entered his old address during checkout. He requested me to ship to a newer address provided by him in a different state. I was quite suspicious about this as I had heard about severalf frauds that had happened in this way.
+
+But the buiyer seemed genuine and I had already received the money ($1200) in my PayPal wallet so I wanted to be a gracious seller. I understand that we have these kind of logistical issuse sometimes so I was sympathizing with this buyer.
+
+Nevertheless, I printed out the label with the new shipping address. I finally dropped off the package to FedEx on 7th Jan. I waited a few days, and checked the delivery status once around 12th or 13th Jan (can't recall). Buyer also didn't send any communication via email or otherwise so I forgot about it.
+
+On 18th Jan, I checked the delivery status again and it showed as delivered. I had purchased $750 signature confirmation from FedEx as part of Express Delivery Plus, and the signature confirmation had also been completed.
+
+Finally, on 25th Jan I received email notification about item not received chargeback. PayPal asked me for any and all info especially shipping-related. I created a Word document and put screenshots of our email chats, as well as the image of the label I had printed out with the new address. I also mentioned abuot this suspicious change of delivery address at the last moment.
+
+When we contested the chargeback, the buyer claimed that it was not them who had emailed about the change of address. We showed the email chats, as well as the Delivered status of the new label. The processor claimed that since I had not delivered to the address mentioned in checkout, they would be ruling in favor of the buyer.
+
+I think this is so unfair, and I'm furious about losing not only $1200, but also $20 of chargeback fees, plus so much of my time! Such buyers make the marketplace worse for everyone involved!!!

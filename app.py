@@ -90,14 +90,14 @@ def main():
                 st.markdown("---")
 
                 if summary is not None:
-                    with st.expander("**Read Summary**", ):
+                    with st.expander("**Read Summary**", expanded=True):
                         st.markdown(summary)
 
 
     elif option == 'Extract text from an image (OCR)':
         st.title("Transcribe text from an image 🔍")
 
-        with st.expander("Keep in mind..."):
+        with st.expander("Keep in mind...", expanded=True):
             st.markdown("1. Upload any image by dragging and dropping or browsing your files.\n2. Copy or download the extracted txt.\n")
 
         uploader_col, lang_col = st.columns(2)
@@ -110,22 +110,26 @@ def main():
         
         image_col, extracted_col = st.columns(2)
 
-        with image_col:
-            if img_file is not None:
-                # Show uploaded image
-                img = Image.open(img_file)
-                st.subheader('Uploaded Image:')
-                st.image(img)
 
-        with extracted_col:
-            if img_file is not None:
-                with st.spinner("Extracting text..."):
-                    content = extract_text(img, lang_codes[language])
-                    if content is not None:
-                        with st.expander("**Read Extracted Text**", ):
-                            st.markdown(content)
-                    
-                    st.download_button('Download extracted text', content)
+        if st.button("Click here to extract text", use_container_width=True, type="primary"):
+            st.markdown("---")
+
+            with image_col:
+                if img_file is not None:
+                    # Show uploaded image
+                    img = Image.open(img_file)
+                    st.subheader('Uploaded Image:')
+                    st.image(img)
+
+            with extracted_col:
+                if img_file is not None:
+                    with st.spinner("Extracting text..."):
+                        content = extract_text(img, lang_codes[language])
+                        if content is not None:
+                            with st.expander("**Read Extracted Text**", expanded=True):
+                                st.markdown(content)
+                        
+                        st.download_button('Download extracted text', content)
 
 if __name__ == "__main__":
     main()
