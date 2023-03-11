@@ -1,6 +1,7 @@
 import requests
+import pytesseract
+from PIL import Image
 import streamlit as st
-
 
 st.set_page_config(
     page_title="EasyDocs",
@@ -36,9 +37,16 @@ def summarize(text, min_len, max_len, model_name="facebook/bart-large-cnn"):
 
     return summary
 
+# OCR function
+def extract_text(img):
+    st.subheader("Extracted text")
+    extracted_text = pytesseract.image_to_string(img)
+    return extracted_text
+
+
 # MAIN Function
 def main():
-    menu = ['Welcome', 'Summarize text']
+    menu = ['Welcome', 'Summarize text', 'Extract text from an image (OCR)']
     with st.sidebar.expander("Menu", expanded=False):
         option = st.selectbox('Choose your task', menu)
 
@@ -81,6 +89,25 @@ def main():
                     with st.expander("**Read Summary**", ):
                         st.markdown(summary)
 
+
+    elif option == 'Extract text from an image (OCR)':
+        st.title("Transcribe text from an image 🔍")
+
+        with st.expander("Keep in mind..."):
+            st.markdown("1. Upload any image by dragging and dropping or browsing your files.\n2. Copy or download the extracted txt.\n")
+
+        img_file = st.file_uploader("Upload your image containing text", type=['png','jpg'])
+        
+        if img_file is not None:
+            # Show uploaded image
+            img = Image.open(img_file)
+            st.subheader('Uploaded Image:')
+            st.image(img)
+
+            with st.spinner("Extracting text..."):
+                content = extract_text(img)
+                st.write(content)
+                st.download_button('Download extracted text', content)
 
 if __name__ == "__main__":
     main()
