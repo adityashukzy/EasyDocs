@@ -1,4 +1,5 @@
-fitz==0.0.1.dev2
+PyMuPDF
+fitz
 Pillow==9.4.0
 pyperclip==1.8.2
 pytesseract==0.3.10
