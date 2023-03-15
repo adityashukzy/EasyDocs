@@ -1,5 +1,6 @@
+import fitz
 import requests
-import pyperclip
+import pyperclip as pp
 import pytesseract
 from PIL import Image
 import streamlit as st
@@ -45,9 +46,23 @@ def extract_text(img, language='eng'):
     extracted_text = pytesseract.image_to_string(img, lang=language)
     return extracted_text
 
-
 # Language Codes for OCR
 lang_codes = {'English': 'eng', 'Hindi': 'hin', 'Tamil': 'tamil'}
+
+
+# Splitting PDF doc into pages function
+def retrieve_pages(pdf_file):
+    text = ""
+    i = 0
+    mat = fitz.Matrix(2.0, 2.0)
+    to_save = st.text_input("Enter a path to save images: ", "Path")
+    
+    with fitz.open(stream = pdf_file.read(), filetype="pdf") as fl1:
+        for pg in fl1:
+            i = i+1
+            pix = pg.get_pixmap(matrix=mat)
+            pix.save(to_save +"_page"+ str(i) +'.png')
+            #st.download_button(label="Download Page" + str(i),data=img,file_name="page"+str(i)+".png",mime='image/png',)
 
 # MAIN Function
 def main():
@@ -134,11 +149,25 @@ def main():
 
                         with copy_col:
                             if st.button("Copy to Clipboard"):
-                                import pyperclip as pp
                                 pp.copy(content)
 
                         with download_col:
                             st.download_button('Download extracted text', content)
+
+    elif option == 'Split PDF document into individual pages':
+        st.title(" Split PDF into its Pages 🔍")
+
+        with st.expander("Keep in mind...", expanded=True):
+            st.markdown("1. We can split a PDF doc of yours by extracting all its individual pages separately.\n2. You may then download each page as a PNG by providing a path to a valid directory on your system.\n")
+
+        pdf_fl = st.file_uploader("Upload your PDF here", type=['pdf'])
+
+        if st.button("Split PDF", use_container_width=True, primary=True):
+            if pdf_fl is not None:
+                txt = retrieve_pages(pdf_fl)
+                if txt is not None:
+                    with st.expander("**Read Extracted Text**", expanded=True):
+                        st.markdown(text)
 
 if __name__ == "__main__":
     main()
