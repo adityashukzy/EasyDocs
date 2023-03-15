@@ -51,14 +51,13 @@ def retrieve_pages(pdf_file):
     i = 0
     list_of_img_paths = []
     mat = fitz.Matrix(2.0, 2.0)
-    to_save = st.text_input("Enter a path to save images: ", "Path")
     
     with fitz.open(stream = pdf_file.read(), filetype="pdf") as fl1:
         for pg in fl1:
             i = i+1
             pix = pg.get_pixmap(matrix=mat)
             # img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
-            pth = to_save +"_page"+ str(i) +'.png'
+            pth = "Page_"+ str(i) +'.png'
             list_of_img_paths += pth
             pix.save(pth)
     
