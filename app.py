@@ -208,15 +208,15 @@ def main():
                     with pdfplumber.open(pdf_file) as pdf:
                         pages = pdf.pages
                         for i, val in enumerate(pages):
-                            pdf_text += "Page f{i}\n" +  val.extract_text() + "\n\n"
+                            pdf_text += f"Page {i}\n\n" +  val.extract_text() + "\n\n\n"
 
                     print(pdf_text)
                     with st.spinner("Converting PDF to audio... "):
                         audio = gTTS(text=pdf_text, lang='en', slow=(True if slow == "Yes" else False))
-                        audio.save('audiobook.wav')
-
-                        st.audio('audiobook.wav', format='audio/wav')
-                        os.remove('audiobook.wav')
+                    
+                    audio.save('audiobook.wav')
+                    st.audio('audiobook.wav', format='audio/wav')
+                    os.remove('audiobook.wav')
 
                 except:
                     st.error("PDF not in a readable format.")
