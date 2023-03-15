@@ -162,7 +162,7 @@ def main():
 
         pdf_fl = st.file_uploader("Upload your PDF here", type=['pdf'])
 
-        if st.button("Split PDF", use_container_width=True, primary=True):
+        if st.button("Split PDF", use_container_width=True, type="primary"):
             if pdf_fl is not None:
                 txt = retrieve_pages(pdf_fl)
                 if txt is not None:
