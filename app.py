@@ -57,13 +57,13 @@ def retrieve_pages(pdf_file):
             i = i+1
             pix = pg.get_pixmap(matrix=mat)
             # img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
-            pth = "Page_"+ str(i) +'.png'
+            pth = os.path.join(os.getcwd(), "Page_" + str(i) + ".png")
             print(pth, end='\n\n')
             list_of_img_paths += pth
             pix.save(pth)
     
     # Create a ZIP file containing all the images
-    print(list_of_img_paths)
+    st.markdown(list_of_img_paths)
     with ZipFile("pdf_images.zip", "w") as zipObj:
         for img_path in list_of_img_paths:
             zipObj.write(img_path)
