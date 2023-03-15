@@ -1,29 +1,24 @@
+import os
 import fitz
 import requests
-import pyperclip as pp
 import pytesseract
 from PIL import Image
 import streamlit as st
+import pyperclip as pp
+from zipfile import ZipFile
 
 st.set_page_config(
     page_title="EasyDocs",
     page_icon="📄",
     layout="wide",
     initial_sidebar_state="auto",
-    menu_items={
-        # 'Get Help': 'https://www.extremelycoolapp.com/help',
-        # 'Report a bug': "https://www.extremelycoolapp.com/bug",
+    menu_items=
+    {
         'About': "# Welcome to EasyDocs📄 ! "
     }
 )
 
-
-# Loading (& caching) the model
-@st.cache_resource
-def load_model(model_name):
-    from transformers import pipeline
-    model = pipeline("summarization", model=model_name)
-    return model
+# ---------------------------------------------------------------------------- #
 
 # Summarization function
 def summarize(text, min_len, max_len, model_name="facebook/bart-large-cnn"):
@@ -54,6 +49,7 @@ lang_codes = {'English': 'eng', 'Hindi': 'hin', 'Tamil': 'tamil'}
 def retrieve_pages(pdf_file):
     text = ""
     i = 0
+    list_of_img_paths = []
     mat = fitz.Matrix(2.0, 2.0)
     to_save = st.text_input("Enter a path to save images: ", "Path")
     
@@ -61,8 +57,18 @@ def retrieve_pages(pdf_file):
         for pg in fl1:
             i = i+1
             pix = pg.get_pixmap(matrix=mat)
-            pix.save(to_save +"_page"+ str(i) +'.png')
-            #st.download_button(label="Download Page" + str(i),data=img,file_name="page"+str(i)+".png",mime='image/png',)
+            # img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
+            pth = to_save +"_page"+ str(i) +'.png'
+            list_of_img_paths += pth
+            pix.save(pth)
+    
+    # Create a ZIP file containing all the images
+    with ZipFile("pdf_images.zip", "w") as zipObj:
+        for img_path in list_of_img_paths:
+            zipObj.write(img_path)
+    
+    return (os.path.exists('pdf_images.zip'))
+    
 
 # MAIN Function
 def main():
@@ -158,16 +164,30 @@ def main():
         st.title(" Split PDF into its Pages 🔍")
 
         with st.expander("Keep in mind...", expanded=True):
-            st.markdown("1. We can split a PDF doc of yours by extracting all its individual pages separately.\n2. You may then download each page as a PNG by providing a path to a valid directory on your system.\n")
+            st.markdown("1. We can split a PDF doc of yours by extracting all its individual pages separately.\n2. You can then download a unified ZIP file containing all the pages in PNG format.\n")
 
         pdf_fl = st.file_uploader("Upload your PDF here", type=['pdf'])
 
         if st.button("Split PDF", use_container_width=True, type="primary"):
             if pdf_fl is not None:
-                txt = retrieve_pages(pdf_fl)
-                if txt is not None:
-                    with st.expander("**Read Extracted Text**", expanded=True):
-                        st.markdown(text)
+                success = retrieve_pages(pdf_fl)
+
+                st.markdown("---")
+
+                if success is not None:
+                    with open("pdf_images.zip", "rb") as fp:
+                        st.download_button(
+                            label="Download unified ZIP-file",
+                            data=fp,
+                            file_name="pdf_images.zip",
+                            mime="application/zip"
+                        )
+                    
+                    # delete file from local storage of VM running the app
+                    if os.path.exists("pdf_images.zip"):
+                        os.remove("pdf_images.zip")
+
+                    
 
 if __name__ == "__main__":
     main()
