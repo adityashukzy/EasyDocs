@@ -1,7 +1,9 @@
 import os
 import fitz
 import requests
+import pdfplumber
 import pytesseract
+from gtts import gTTS
 from PIL import Image
 import streamlit as st
 import pyperclip as pp
@@ -69,11 +71,11 @@ def retrieve_pages(pdf_file):
             zipObj.write(img_path)
     
     return (os.path.exists('pdf_images.zip'))
-    
+
 
 # MAIN Function
 def main():
-    menu = ['Welcome', 'Summarize text', 'Extract text from an image (OCR)', 'Split PDF document into individual pages']
+    menu = ['Welcome', 'Summarize text', 'Extract text from an image (OCR)', 'Split PDF into pages', 'Create an audiobook for text/PDF']
     with st.sidebar.expander("Menu", expanded=False):
         option = st.selectbox('Choose your task', menu)
 
@@ -161,19 +163,18 @@ def main():
                         with download_col:
                             st.download_button('Download extracted text', content)
 
-    elif option == 'Split PDF document into individual pages':
-        st.title(" Split PDF into its Pages 🔍")
+    elif option == 'Split PDF into pages':
+        st.title(" Split PDF document into its individual pages")
 
         with st.expander("Keep in mind...", expanded=True):
-            st.markdown("1. We can split a PDF doc of yours by extracting all its individual pages separately.\n2. You can then download a unified ZIP file containing all the pages in PNG format.\n")
+            st.markdown("1. We can split a PDF document of yours by extracting all its individual pages separately.\n2. You can then download a unified ZIP file containing all the pages in PNG format.\n")
 
         pdf_fl = st.file_uploader("Upload your PDF here", type=['pdf'])
 
         if st.button("Split PDF", use_container_width=True, type="primary"):
+            st.markdown("---")
             if pdf_fl is not None:
                 success = retrieve_pages(pdf_fl)
-
-                st.markdown("---")
 
                 if success is not None:
                     with open("pdf_images.zip", "rb") as fp:
@@ -187,8 +188,35 @@ def main():
                     # delete file from local storage of VM running the app
                     if os.path.exists("pdf_images.zip"):
                         os.remove("pdf_images.zip")
+    
+    elif option == 'Create an audiobook for text/PDF':
+        st.title('Create an audiobook for text/PDF')
 
-                    
+        with st.expander("Keep in mind...", expanded=True):
+            st.markdown("1. You can enter a text or upload a PDF to get the same in an audio MP3 format.\n")
+
+        pdf_file = st.file_uploader("Upload your PDF here", type=['pdf'])
+        slow = st.radio("Do you want it read out slowly?", ("Yes", "No"), index=1)
+
+        if st.button("Create an Audiobook", use_container_width=True, type="primary"):
+            st.markdown("---")
+            
+            if pdf_file is not None:
+                pdf_text = ""
+
+                try:
+                    with pdfplumber.open(pdf_file) as pdf:
+                        pages = pdf.pages
+                        for i, val in enumerate(pages):
+                            pdf_text += "Page f{i}\n" + val.extract_text() + "\n\n"
+
+                    print(pdf_text)
+
+                    audio = gTTS(text=pdf_text, lang='en', slow=(True if slow == "Yes" else False))
+                
+                except:
+                    st.error("PDF not in a readable format.")
+    
 
 if __name__ == "__main__":
     main()
