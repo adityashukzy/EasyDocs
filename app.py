@@ -66,7 +66,7 @@ def retrieve_pages(pdf_file):
 
 # MAIN Function
 def main():
-    menu = ['Welcome', 'Summarize text', 'Extract text from an image (OCR)']
+    menu = ['Welcome', 'Summarize text', 'Extract text from an image (OCR)', 'Split PDF document into individual pages']
     with st.sidebar.expander("Menu", expanded=False):
         option = st.selectbox('Choose your task', menu)
 
