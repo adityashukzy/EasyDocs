@@ -40,7 +40,7 @@ def summarize(text, min_len, max_len, model_name="facebook/bart-large-cnn"):
 
 model_names = {
     "Facebook - BART-Large-CNN" : "facebook/bart-large-cnn",
-    "EasyDocs - Finetuned BART" : "adityashukzy/bart-easydocs"
+    "EasyDocs - Finetuned BART" : "adityashukzy/bart-base-finetuned-arxiv"
     }
 
 # OCR function
