@@ -35,7 +35,9 @@ def summarize(text, min_len, max_len, model_name="facebook/bart-large-cnn"):
     response = requests.post(API_URL, headers=headers, json=payload)
     st.markdown(response)
     st.markdown(response.json())
-    summary = response.json()[0]['summary_text']
+    
+    output_verbiage = 'generated_text' if model_name == 'adityashukzy/bart-base-finetuned-arxiv' else 'summary_text'
+    summary = response.json()[0][output_verbiage]
 
     return summary
 
