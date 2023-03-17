@@ -44,7 +44,7 @@ def extract_text(img, language='eng'):
     return extracted_text
 
 # Language Codes for OCR
-lang_codes = {'English': 'eng', 'Hindi': 'hin', 'Tamil': 'tamil'}
+lang_codes = {'English': 'eng', 'Hindi': 'hin', 'Tamil': 'tam'}
 
 
 # Splitting PDF doc into pages function
@@ -60,12 +60,11 @@ def retrieve_pages(pdf_file):
             pix = pg.get_pixmap(matrix=mat)
             # img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
             pth = os.path.join(os.getcwd(), "Page_" + str(i) + ".png")
-            print(pth, end='\n\n')
             list_of_img_paths.append(pth)
             pix.save(pth)
     
     # Create a ZIP file containing all the images
-    st.markdown(list_of_img_paths)
+    # st.markdown(list_of_img_paths)
     with ZipFile("pdf_images.zip", "w") as zipObj:
         for img_path in list_of_img_paths:
             zipObj.write(img_path)
@@ -152,16 +151,9 @@ def main():
                         content = extract_text(img, lang_codes[language])
                         if content is not None:
                             with st.expander("**Read Extracted Text**", expanded=True):
-                                st.markdown(content)
+                                st.code(content, language=None)
                         
-                        copy_col, download_col = st.columns(2)
-
-                        with copy_col:
-                            if st.button("Copy to Clipboard"):
-                                pp.copy(content)
-
-                        with download_col:
-                            st.download_button('Download extracted text', content)
+                        st.download_button('Download extracted text', content, use_container_width=True)
 
     elif option == 'Split PDF into pages':
         st.title(" Split PDF document into its individual pages")
