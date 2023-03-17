@@ -34,6 +34,7 @@ def summarize(text, min_len, max_len, model_name="facebook/bart-large-cnn"):
         }
     response = requests.post(API_URL, headers=headers, json=payload)
     st.markdown(response)
+    st.markdown(response.json())
     summary = response.json()[0]['summary_text']
 
     return summary
