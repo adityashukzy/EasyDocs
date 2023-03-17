@@ -37,9 +37,14 @@ def summarize(text, min_len, max_len, model_name="facebook/bart-large-cnn"):
 
     return summary
 
+model_names = {
+    "Facebook's BART-Large-CNN" : "facebook/bart-large-cnn",
+    "EasyDocs Finetuned BART" : "adityashukzy/bart-easydocs"
+    }
+
 # OCR function
 def extract_text(img, language='eng'):
-    st.subheader("Extracted text")
+    st.subheader("Extracted Text")
     extracted_text = pytesseract.image_to_string(img, lang=language)
     return extracted_text
 
@@ -104,7 +109,8 @@ def main():
             max_len = st.slider("Select maximum number of words in summary", min_value=20, step=20, max_value=256, key='second', value=100)
 
         with model_col:
-            model_name = st.selectbox("(Optional) Select model used for summarization", ("facebook/bart-large-cnn", "adityashukzy/bart-easydocs"))
+            verbose_model_name = st.selectbox("(Optional) Select model used for summarization", ("Facebook - BART-Large-CNN", "EasyDocs - Finetuned BART"))
+            model_name = model_names[verbose_model_name]
 
         with st.container():    
             if st.button("Click here to extract summary", use_container_width=True, type="primary"):
@@ -142,7 +148,7 @@ def main():
                 if img_file is not None:
                     # Show uploaded image
                     img = Image.open(img_file)
-                    st.subheader('Uploaded Image:')
+                    st.subheader('Uploaded Image')
                     st.image(img)
 
             with extracted_col:
