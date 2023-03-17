@@ -34,8 +34,10 @@ with st.expander("Keep in mind...", expanded=True):
 
 pdf_fl = st.file_uploader("Upload your PDF here", type=['pdf'])
 
-if st.button("Split PDF", use_container_width=True, type="primary"):
-    st.markdown("---")
+btn = st.button("Split PDF", use_container_width=True, type="primary")
+st.markdown("---")
+
+if btn:
     if pdf_fl is not None:
         success = retrieve_pages(pdf_fl)
 

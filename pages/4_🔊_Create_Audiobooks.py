@@ -11,9 +11,10 @@ with st.expander("Keep in mind...", expanded=True):
 pdf_file = st.file_uploader("Upload your PDF here", type=['pdf'])
 slow = st.radio("Do you want it read out slowly?", ("Yes", "No"), index=1)
 
-if st.button("Create an Audiobook", use_container_width=True, type="primary"):
-    st.markdown("---")
-    
+btn = st.button("Create an Audiobook", use_container_width=True, type="primary")
+st.markdown("---")
+
+if btn:
     if pdf_file is not None:
         pdf_text = "\n\n"
 

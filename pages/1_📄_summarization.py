@@ -17,8 +17,10 @@ def summarize(text, min_len, max_len, model_name="facebook/bart-large-cnn"):
         }
     response = requests.post(API_URL, headers=headers, json=payload)
     
-    output_verbiage = 'generated_text' if model_name == 'adityashukzy/bart-base-finetuned-arxiv' else 'summary_text'
-    summary = response.json()[0][output_verbiage]
+    if model_name == 'adityashukzy/bart-base-finetuned-arxiv':
+        summary = response.json()['generated_text']
+    else:
+        summary = response.json()[0]['summary_text']
 
     return summary
 
@@ -46,12 +48,13 @@ with model_col:
     verbose_model_name = st.selectbox("(Optional) Select model used for summarization", ("Facebook - BART-Large-CNN", "EasyDocs - Finetuned BART"))
     model_name = model_names[verbose_model_name]
 
-with st.container():    
-    if st.button("Click here to extract summary", use_container_width=True, type="primary"):
+with st.container():
+    btn = st.button("Click here to extract summary", use_container_width=True, type="primary")
+    st.markdown("---")
+    
+    if btn:
         with st.spinner("Summarizing..."):
             summary = summarize(text, min_len, max_len, model_name)
-        
-        st.markdown("---")
 
         if summary is not None:
             with st.expander("**Read Summary**", expanded=True):
