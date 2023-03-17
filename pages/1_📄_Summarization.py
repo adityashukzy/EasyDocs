@@ -20,7 +20,7 @@ def summarize(text, min_len, max_len, model_name="facebook/bart-large-cnn"):
     st.markdown(response.json())
     
     if model_name == 'adityashukzy/bart-base-finetuned-arxiv':
-        summary = response.json()['generated_text']
+        summary = response.json()[0]['generated_text']
     else:
         summary = response.json()[0]['summary_text']
 
