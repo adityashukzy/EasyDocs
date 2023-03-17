@@ -47,7 +47,8 @@ if btn:
                     label="Download unified ZIP-file",
                     data=fp,
                     file_name="pdf_images.zip",
-                    mime="application/zip"
+                    mime="application/zip",
+                    use_container_width=True
                 )
             
             # delete file from local storage of VM running the app

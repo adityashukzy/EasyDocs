@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit_extras.app_logo import add_logo
 
 st.set_page_config(
     page_title="EasyDocs",
@@ -13,6 +14,8 @@ st.set_page_config(
 
 # MAIN Function
 def main():
+    add_logo("https://ibb.co/S39BWpt")
+
     st.subheader("EasyDocs is a one-stop solution combining all your most needed tools as a student. We understand the value and preciousness of time and that is why we have aimed to make EasyDocs as no-nonsense as possible!")
 
     st.write("👉 Summarize webpages and long text documents and breeze through the essentials!")

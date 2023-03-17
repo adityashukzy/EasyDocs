@@ -25,10 +25,10 @@ with uploader_col:
 with lang_col:
     language = st.selectbox("(Optional) Select language", ('English', 'Hindi', 'Tamil'))
 
+btn = st.button("Click here to extract text", use_container_width=True, type="primary")
+st.markdown("---")
 
-if st.button("Click here to extract text", use_container_width=True, type="primary"):
-    st.markdown("---")
-
+if btn:
     image_col, extracted_col = st.columns(2)
 
     with image_col:
