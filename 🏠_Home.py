@@ -14,8 +14,6 @@ st.set_page_config(
 
 # MAIN Function
 def main():
-    with st.sidebar:
-        st.markdown("---")
 
     add_logo("https://ibb.co/S39BWpt")
 
