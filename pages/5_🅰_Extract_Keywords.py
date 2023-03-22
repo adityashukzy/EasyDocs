@@ -89,7 +89,7 @@ def encode_long_document(model, DOC):
     return pooled_doc_embedding
 
 
-def extract_keywords(TEXT, n_gram_range):
+def extract_keywords(TEXT, min_kws, max_kws):
     # Set token length of possible keyphrases (via n-gram)
     n_gram_range = (min_kws,max_kws)
     stopwords = "english"
