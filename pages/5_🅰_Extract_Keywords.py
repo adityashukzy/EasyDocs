@@ -133,10 +133,10 @@ with num_kws_col:
     num_kws = st.slider("Select number of keywords/keyphrases to extract", min_value=1, step=1, max_value=10, key='first', value=1)
 
 with min_kws_col:
-    min_kws = st.slider("Select minimum number of words in each keyphrase", min_value=1, step=1, max_value=5, key='first', value=1)
+    min_kws = st.slider("Select minimum number of words in each keyphrase", min_value=1, step=1, max_value=5, key='second', value=1)
 
 with max_kws_col:
-    max_kws = st.slider("Select maximum number of words in each keyphrase", min_value=1, step=1, max_value=5, key='second', value=3)
+    max_kws = st.slider("Select maximum number of words in each keyphrase", min_value=1, step=1, max_value=5, key='third', value=3)
 
 
 with st.container():
