@@ -112,7 +112,7 @@ def extract_keywords(TEXT, num_kws, min_kws, max_kws):
     candidate_embeddings = model.encode(kw_candidates)
 
     # Set num of candidate keyphrases to be shortlisted
-    num_candidates = 250/num_kws
+    num_candidates = int(250/num_kws)
     # Set num of final keywords required
     top_n = num_kws
 
