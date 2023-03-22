@@ -89,9 +89,9 @@ def encode_long_document(model, DOC):
     return pooled_doc_embedding
 
 
-def extract_keywords(TEXT, min_kws, max_kws):
+def extract_keywords(TEXT, num_kws, min_kws, max_kws):
     # Set token length of possible keyphrases (via n-gram)
-    n_gram_range = (min_kws,max_kws)
+    n_gram_range = (min_kws, max_kws)
     stopwords = "english"
 
     # Get all possible candidates for keywords and keyphrases (1-n grams)
@@ -112,9 +112,9 @@ def extract_keywords(TEXT, min_kws, max_kws):
     candidate_embeddings = model.encode(kw_candidates)
 
     # Set num of candidate keyphrases to be shortlisted
-    num_candidates = 50
+    num_candidates = 250/num_kws
     # Set num of final keywords required
-    top_n = 5
+    top_n = num_kws
 
     extracted_keywords = max_sum_similarity(doc_embedding, candidate_embeddings, kw_candidates, num_candidates, top_n)
     return extracted_keywords
@@ -127,7 +127,10 @@ with st.expander("Keep in mind..."):
 st.subheader("Enter text to extract keywords from")
 TEXT = st.text_area(label="dont show", height=150, label_visibility="collapsed")
 
-min_kws_col, max_kws_col = st.columns(2)
+num_kws_col, min_kws_col, max_kws_col = st.columns(3)
+
+with num_kws_col:
+    num_kws = st.slider("Select number of keywords/keyphrases to extract", min_value=1, step=1, max_value=10, key='first', value=1)
 
 with min_kws_col:
     min_kws = st.slider("Select minimum number of words in each keyphrase", min_value=1, step=1, max_value=5, key='first', value=1)
@@ -142,7 +145,7 @@ with st.container():
     
     if btn:
         with st.spinner("Extracting Keywords..."):
-            keywords = extract_keywords(TEXT, min_kws, max_kws)
+            keywords = extract_keywords(TEXT, num_kws, min_kws, max_kws)
 
         if keywords is not None:
             with st.expander("**Read Keywords**", expanded=True):
