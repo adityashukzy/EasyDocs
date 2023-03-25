@@ -73,6 +73,19 @@ def encode_long_document(model, DOC):
 
     # Embed each paragraph one-by-one
     for para in paras:
+        # x = para.find("Keywords")
+        # y = para.find("Index Terms")
+        
+        # if x != -1:
+        #     print(para[(x + len("Keywords") + 2):])
+        #     return
+        # if y != -1:
+        #     print(para[(x + len("Index Terms") + 2):])
+        #     return
+        # else:
+        #     continue
+
+
         embedding = model.encode([para])
         # reshape (1,n) array to (n,)
         embedding = np.reshape(embedding, (embedding[0].shape))
@@ -106,7 +119,8 @@ def extract_keywords(TEXT, num_kws, min_kws, max_kws):
     # print(num_tokens, end = "\n\n")
 
     # Derive embeddings for the document
-    if num_tokens > 300: doc_embedding = encode_long_document(model, TEXT)
+    if num_tokens > 300:
+        doc_embedding = encode_long_document(model, TEXT)
     else: doc_embedding = model.encode([TEXT])
     # Derive embeddings for each candidate keyphrase
     candidate_embeddings = model.encode(kw_candidates)
@@ -120,6 +134,41 @@ def extract_keywords(TEXT, num_kws, min_kws, max_kws):
     return extracted_keywords
 
 
+def recommend_similar_papers(keywords, num_recs=5):
+    """
+        INPUT:
+            keywords: List of Keywords (each a String)
+            num_recs: Number of Papers to Recommend (an Integer)
+        OUTPUT:
+            recommendations: List of similar papers (by Title)
+    """
+    import json
+    import numpy as np
+    from sentence_transformers import SentenceTransformer
+    from sklearn.metrics.pairwise import cosine_similarity
+    
+    # Convert list of keywords into a singular string by joining via a separator
+    keyword_str = ' ; '.join(keywords)
+    
+    # Get the embedding for the keywords for this paper
+    model = SentenceTransformer("all-MiniLM-L6-v2")
+    cur_paper_embeddings = model.encode([keyword_str])
+    # Fetch pre-computed embeddings for each of the 363,589 research papers in our Dataset
+    cand_paper_embeddings = np.load('/kaggle/input/kp20k-keyword-embeddings-npy/cand_paper_embeddings.npy')
+    
+    # Compute the similarity between this paper and each of the papers in our Dataset
+    distances = cosine_similarity(cur_paper_embeddings, cand_paper_embeddings)
+    # Fetch the num_recs most similar ones
+    with open('/kaggle/input/kp20k-title-keyword-as-strings/training_new.json', 'r') as json_file: json_data = json.load(json_file)
+    most_similar_papers = [json_data['data'][index] for index in distances.argsort()[0][-num_recs:]]
+
+    recommendations = [paper['title'] for paper in most_similar_papers]
+    return recommendations
+
+
+# -------------------------------------------------------------------------------------
+
+st.image('assets/bart_arch.png')
 
 with st.expander("Keep in mind..."):
     st.markdown("1. For general-purpose texts, use bart-large-cnn.\n2. For academic or scientific texts, use bart-easydocs.\n3. The summary produced may not accurately cover all relevant parts of a text. Use this tool only as a starting guide.\n")
@@ -150,3 +199,13 @@ with st.container():
         if keywords is not None:
             with st.expander("**Read Keywords**", expanded=True):
                 st.markdown(keywords)
+            
+            st.markdown("---")
+            rec_btn = st.button("Show Similar Publications", use_container_width=True)
+
+            if rec_btn:
+                papers = recommend_similar_papers(keywords)
+                
+                if papers is not None:
+                    with st.expander("**Read Keywords**", expanded=True):
+                        st.markdown(keywords)
