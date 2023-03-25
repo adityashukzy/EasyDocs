@@ -209,4 +209,4 @@ with st.container():
                 
             if papers is not None:
                 with st.expander("**Browse Similar Papers**", expanded=True):
-                    st.markdown(keywords)
+                    st.markdown(papers)
