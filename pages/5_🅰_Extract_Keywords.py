@@ -154,7 +154,7 @@ def recommend_similar_papers(keywords, num_recs=5):
     model = SentenceTransformer("all-MiniLM-L6-v2")
     cur_paper_embeddings = model.encode([keyword_str])
     # Fetch pre-computed embeddings for each of the 363,589 research papers in our Dataset
-    cand_paper_embeddings = np.load('assets/cand_paper_embeddings.npy')
+    cand_paper_embeddings = np.load('/app/easydocs/Assets/cand_paper_embeddings.npy')
     
     # Compute the similarity between this paper and each of the papers in our Dataset
     distances = cosine_similarity(cur_paper_embeddings, cand_paper_embeddings)
@@ -167,6 +167,11 @@ def recommend_similar_papers(keywords, num_recs=5):
 
 
 # -------------------------------------------------------------------------------------
+
+import os
+
+st.markdown(os.getcwd())
+st.markdown(os.listdir())
 
 with st.expander("Keep in mind..."):
     st.markdown("1. For general-purpose texts, use bart-large-cnn.\n2. For academic or scientific texts, use bart-easydocs.\n3. The summary produced may not accurately cover all relevant parts of a text. Use this tool only as a starting guide.\n")
