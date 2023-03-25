@@ -11,6 +11,8 @@ __pycache__/
 
 # C extensions
 *.so
+*.npy
+
 
 # Distribution / packaging
 .Python
@@ -135,3 +137,7 @@ dmypy.json
 .pyre/
 Assets/Attention_Paper_Page_2.png
 pages/5_🅰_Extract_Keywords.py
+kw_extraction.py
+exp.py
+exp2.py
+assets/training.json
