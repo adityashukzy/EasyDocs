@@ -159,7 +159,7 @@ def recommend_similar_papers(keywords, num_recs=5):
     # Compute the similarity between this paper and each of the papers in our Dataset
     distances = cosine_similarity(cur_paper_embeddings, cand_paper_embeddings)
     # Fetch the num_recs most similar ones
-    with open('app/easydocs/Assets/training_new.json', 'r') as json_file: json_data = json.load(json_file)
+    with open('/app/easydocs/Assets/training_new.json', 'r') as json_file: json_data = json.load(json_file)
     most_similar_papers = [json_data['data'][index] for index in distances.argsort()[0][-num_recs:]]
 
     recommendations = [paper['title'] for paper in most_similar_papers]
