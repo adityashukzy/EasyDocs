@@ -197,13 +197,11 @@ with st.container():
         if keywords is not None:
             with st.expander("**Read Keywords**", expanded=True):
                 st.markdown(keywords)
-            
-            st.markdown("---")
-            rec_btn = st.button("Show Similar Publications", use_container_width=True)
 
-            if rec_btn:
+            st.markdown("---")
+            with st.spinner("Recommending Similar Papers..."):
                 papers = recommend_similar_papers(keywords)
                 
-                if papers is not None:
-                    with st.expander("**Read Keywords**", expanded=True):
-                        st.markdown(keywords)
+            if papers is not None:
+                with st.expander("**Browse Similar Papers**", expanded=True):
+                    st.markdown(keywords)
