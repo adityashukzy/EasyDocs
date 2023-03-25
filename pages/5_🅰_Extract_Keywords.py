@@ -168,7 +168,9 @@ def recommend_similar_papers(keywords, num_recs=5):
 
 # -------------------------------------------------------------------------------------
 
-st.image('/app/easydocs/assets/bart_arch.png')
+from PIL import Image
+
+st.image(Image.open('/app/easydocs/assets/bart_arch.png'))
 
 with st.expander("Keep in mind..."):
     st.markdown("1. For general-purpose texts, use bart-large-cnn.\n2. For academic or scientific texts, use bart-easydocs.\n3. The summary produced may not accurately cover all relevant parts of a text. Use this tool only as a starting guide.\n")
