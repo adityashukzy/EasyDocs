@@ -171,8 +171,8 @@ def recommend_similar_papers(keywords, num_recs=5):
 from PIL import Image
 
 import os
-print(os.getcwd())
-print(os.listdir())
+st.markdown(os.getcwd())
+st.markdown(os.listdir())
 
 st.image(Image.open('assets/bart_arch.png'))
 
