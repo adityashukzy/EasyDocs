@@ -154,12 +154,12 @@ def recommend_similar_papers(keywords, num_recs=5):
     model = SentenceTransformer("all-MiniLM-L6-v2")
     cur_paper_embeddings = model.encode([keyword_str])
     # Fetch pre-computed embeddings for each of the 363,589 research papers in our Dataset
-    cand_paper_embeddings = np.load('/kaggle/input/kp20k-keyword-embeddings-npy/cand_paper_embeddings.npy')
+    cand_paper_embeddings = np.load('assets/cand_paper_embeddings.npy')
     
     # Compute the similarity between this paper and each of the papers in our Dataset
     distances = cosine_similarity(cur_paper_embeddings, cand_paper_embeddings)
     # Fetch the num_recs most similar ones
-    with open('/kaggle/input/kp20k-title-keyword-as-strings/training_new.json', 'r') as json_file: json_data = json.load(json_file)
+    with open('assets/training_new.json', 'r') as json_file: json_data = json.load(json_file)
     most_similar_papers = [json_data['data'][index] for index in distances.argsort()[0][-num_recs:]]
 
     recommendations = [paper['title'] for paper in most_similar_papers]
